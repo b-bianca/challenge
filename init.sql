@@ -1,13 +1,20 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE "user" (
+CREATE TABLE users (
     ID uuid DEFAULT uuid_generate_v4 (),
-    NAME VARCHAR(250) NOT NULL,
     CPF VARCHAR NOT NULL,
-    EMAIL VARCHAR NOT NULL,
-    PASSWORD VARCHAR NOT NULL,
-    NOTIFICATION BOOLEAN NOT null,
     CREATED_AT timestamptz NOT NULL DEFAULT now(),
 	UPDATED_AT timestamptz NOT NULL DEFAULT now(),
     PRIMARY KEY (ID)
+);
+
+CREATE TABLE notify (
+    ID uuid DEFAULT uuid_generate_v4 (),
+    USER_ID uuid,
+    datetime time not null,
+    MESSAGE TEXT NOT NULL,
+    CREATED_AT timestamptz NOT NULL DEFAULT now(),
+	UPDATED_AT timestamptz NOT NULL DEFAULT now(),
+    PRIMARY KEY (ID),
+    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id)
 );
