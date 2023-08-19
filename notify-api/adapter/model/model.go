@@ -23,3 +23,18 @@ type NotificationResponse struct {
 type NotificationListResponse struct {
 	Result []*NotificationResponse
 }
+
+type MessageRequest struct {
+	NotifyID uuid.UUID `json:"notify_id"`
+	Message  string    `json:"message"`
+}
+type MessageResponse struct {
+	ID        uuid.UUID `json:"id"`
+	NotifyID  uuid.UUID `json:"notify_id"`
+	Message   string    `json:"message"`
+	CreatedAt time.Time `json:"updated_at"`
+}
+
+type MessageListResponse struct {
+	Result []*MessageResponse
+}

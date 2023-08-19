@@ -35,3 +35,22 @@ func (uc *useCaseNotify) FetchNotify(ctx context.Context) (*entity.NotificationL
 
 	return res, nil
 }
+
+func (uc *useCaseNotify) SendMessage(ctx context.Context, m *entity.Message) (*entity.Message, error) {
+	res, err := uc.repository.SendMessage(ctx, m)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (uc *useCaseNotify) FetchMessage(ctx context.Context) (*entity.MessageList, error) {
+	res, err := uc.repository.FetchMessage(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}

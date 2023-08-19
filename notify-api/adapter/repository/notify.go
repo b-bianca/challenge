@@ -41,3 +41,25 @@ func (n *Notify) FetchNotify(ctx context.Context) (*entity.NotificationList, err
 	}, nil
 
 }
+
+func (n *Notify) SendMessage(ctx context.Context, m *entity.Message) (*entity.Message, error) {
+	dbFn := n.db.WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true})
+
+	if result := dbFn.Table("message").Create(m); result.Error != nil {
+		return nil, result.Error
+	}
+
+	return m, nil
+}
+
+func (n *Notify) FetchMessage(ctx context.Context) (*entity.MessageList, error) {
+	dbFn := n.db.WithContext(ctx)
+
+	var m *entity.MessageList
+
+	if result := dbFn.Table("message").Find(&m); result.Error != nil {
+		return nil, result.Error
+	}
+
+	return m, nil
+}

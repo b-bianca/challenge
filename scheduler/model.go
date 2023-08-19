@@ -1,4 +1,4 @@
-package entity
+package scheduler
 
 import (
 	"time"
@@ -19,13 +19,7 @@ type NotificationList struct {
 	Result []*Notification
 }
 
-type Message struct {
-	ID        uuid.UUID `gorm:"type:uuid;default:gen_random_uuid()"`
-	NotifyID  uuid.UUID `gorm:"not null"`
-	Message   string    `gorm:"not null"`
-	CreatedAt time.Time `gorm:"not null;autoCreateTime"`
-}
-
-type MessageList struct {
-	Result []*Message
+type MessageRequest struct {
+	NotifyID uuid.UUID `json:"notify_id"`
+	Message  string    `json:"message"`
 }

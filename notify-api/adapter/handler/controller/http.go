@@ -68,3 +68,56 @@ func (h *Handler) FetchNotification(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, output)
 }
+
+func (h *Handler) SendMessage(ctx *gin.Context) {
+	var input model.MessageRequest
+	if err := ctx.ShouldBindJSON(&input); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	domain := &entity.Message{
+		NotifyID: input.NotifyID,
+		Message:  input.Message,
+	}
+
+	res, err := h.useCase.SendMessage(ctx, domain)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Server error"})
+		return
+	}
+
+	output := &model.MessageResponse{
+		ID:        res.ID,
+		NotifyID:  res.NotifyID,
+		Message:   res.Message,
+		CreatedAt: res.CreatedAt,
+	}
+
+	ctx.JSON(http.StatusOK, output)
+}
+
+func (h *Handler) FetchMessage(ctx *gin.Context) {
+	res, err := h.useCase.FetchMessage(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Server error"})
+		return
+	}
+
+	responseItems := make([]*model.MessageResponse, 0, len(res.Result))
+
+	for _, item := range res.Result {
+		responseItems = append(responseItems, &model.MessageResponse{
+			ID:        item.ID,
+			NotifyID:  item.NotifyID,
+			Message:   item.Message,
+			CreatedAt: item.CreatedAt,
+		})
+	}
+
+	output := &model.MessageListResponse{
+		Result: responseItems,
+	}
+
+	ctx.JSON(http.StatusOK, output)
+}

@@ -19,3 +19,12 @@ CREATE TABLE notify (
     PRIMARY KEY (ID),
     CONSTRAINT fk_user FOREIGN KEY(USER_ID) REFERENCES users(ID)
 );
+
+CREATE TABLE message (
+  ID uuid DEFAULT uuid_generate_v4 (),
+  MESSAGE TEXT NOT NULL,
+  NOTIFY_ID uuid,
+  CREATED_AT timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (ID),
+  CONSTRAINT fk_message FOREIGN KEY(NOTIFY_ID) REFERENCES notify(ID)
+);
