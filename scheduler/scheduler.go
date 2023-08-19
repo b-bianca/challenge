@@ -1,11 +1,10 @@
 package scheduler
 
 import (
-	"fmt"
+	"sync"
 	"time"
 
 	"github.com/b-bianca/melichallenge/notify-api/adapter/model"
-	"github.com/go-co-op/gocron"
 )
 
 const (
@@ -14,53 +13,35 @@ const (
 
 func Scheduler() error {
 
-	taskCompleted := make(chan struct{})
-
-	s := gocron.NewScheduler(time.UTC)
+	webPageSender := &WebPageSender{WebPageURL: "http://localhost:8081/api/v1/notification/message"}
 
 	notification, err := Pulling(notifyAPIURL, 1)
 	if err != nil {
 		return err
 	}
 
-	webPageSender := &WebPageSender{WebPageURL: "http://localhost:8081/api/v1/notification/message"}
+	var wg sync.WaitGroup
 
 	for _, n := range notification.Result {
-
-		isoDateTime := n.DateTime.Format("2006-01-02T15:04:05.999999999-07:00")
-
-		dbTime, err := time.Parse("2006-01-02T15:04:05.999999999-07:00", isoDateTime)
-		if err != nil {
-			fmt.Println("Error while parsing hour/time:", err)
-			return err
-		}
 
 		body := &model.MessageRequest{
 			NotifyID: n.ID,
 			Message:  n.Message,
 		}
-		s.At(dbTime).Do(func() {
-			SendMessage(webPageSender, body)
-			taskCompleted <- struct{}{}
-		})
-	}
 
-	s.StartAsync()
+		now := time.Now()
+		duration := n.DateTime.Sub(now)
+		if duration > 0 {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				time.Sleep(duration)
+				SendMessage(webPageSender, body)
+			}()
 
-	go func() {
-		ticker := time.NewTicker(time.Second * 5)
-		defer ticker.Stop()
-
-		for {
-			select {
-			case <-ticker.C:
-				for i := 0; i < len(notification.Result); i++ {
-					<-taskCompleted
-				}
-				fmt.Println("Completed scheduled tasks!")
-			}
 		}
-	}()
 
-	select {}
+	}
+	wg.Wait()
+	return nil
 }
