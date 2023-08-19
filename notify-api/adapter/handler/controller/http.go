@@ -19,6 +19,7 @@ func (h *Handler) CreateNotification(ctx *gin.Context) {
 	}
 
 	domain := &entity.Notification{
+		UserID:   uuid.MustParse(userIDParam),
 		DateTime: input.DateTime,
 		Message:  input.Message,
 	}
@@ -36,6 +37,33 @@ func (h *Handler) CreateNotification(ctx *gin.Context) {
 		Message:   res.Message,
 		CreatedAt: res.CreatedAt,
 		UpdatedAt: res.UpdatedAt,
+	}
+
+	ctx.JSON(http.StatusOK, output)
+}
+
+func (h *Handler) FetchNotification(ctx *gin.Context) {
+	res, err := h.useCase.FetchNotify(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Server error"})
+		return
+	}
+
+	responseItems := make([]*model.NotificationResponse, 0, len(res.Result))
+
+	for _, item := range res.Result {
+		responseItems = append(responseItems, &model.NotificationResponse{
+			ID:        item.ID,
+			UserID:    item.UserID,
+			DateTime:  item.DateTime,
+			Message:   item.Message,
+			CreatedAt: item.CreatedAt,
+			UpdatedAt: item.UpdatedAt,
+		})
+	}
+
+	output := &model.NotificationListResponse{
+		Result: responseItems,
 	}
 
 	ctx.JSON(http.StatusOK, output)

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"github.com/b-bianca/melichallenge/notify-api/internal/domain/entity"
 	"gorm.io/gorm"
@@ -24,4 +25,19 @@ func (n *Notify) CreateNotify(ctx context.Context, nt *entity.Notification) (*en
 	}
 
 	return nt, nil
+}
+
+func (n *Notify) FetchNotify(ctx context.Context) (*entity.NotificationList, error) {
+	dbFn := n.db.WithContext(ctx)
+
+	var nt []*entity.Notification
+	twoMinutesAgo := time.Now().Add(-2 * time.Minute)
+
+	if result := dbFn.Table("notify").Where("created_at >= ?", twoMinutesAgo).Find(&nt); result.Error != nil {
+		return nil, result.Error
+	}
+	return &entity.NotificationList{
+		Result: nt,
+	}, nil
+
 }

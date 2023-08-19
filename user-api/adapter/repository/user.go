@@ -19,7 +19,7 @@ func NewUserRepository(db *gorm.DB) *User {
 func (us *User) CreateUser(ctx context.Context, u *entity.User) (*entity.User, error) {
 	dbFn := us.db.WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true})
 
-	if result := dbFn.Table("user").Create(u); result.Error != nil {
+	if result := dbFn.Table("users").Create(u); result.Error != nil {
 		return nil, result.Error
 	}
 
@@ -29,5 +29,5 @@ func (us *User) CreateUser(ctx context.Context, u *entity.User) (*entity.User, e
 func (us *User) PartialUpdateUser(ctx context.Context, u *entity.User) error {
 	dbFn := us.db.WithContext(ctx)
 
-	return dbFn.Table("user").Where(u.ID).Updates(u).Error
+	return dbFn.Table("users").Where(u.ID).Updates(u).Error
 }

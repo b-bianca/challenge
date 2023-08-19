@@ -14,3 +14,7 @@ type Notification struct {
 	CreatedAt time.Time `gorm:"not null;autoCreateTime"`
 	UpdatedAt time.Time `gorm:"not null;autoUpdateTime"`
 }
+
+type NotificationList struct {
+	Result []*Notification
+}

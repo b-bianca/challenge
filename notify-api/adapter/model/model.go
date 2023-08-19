@@ -7,15 +7,19 @@ import (
 )
 
 type NotificationRequest struct {
-	DateTime time.Time `gorm:"not null"`
-	Message  string    `gorm:"not null"`
+	DateTime time.Time `json:"date_time" binding:"required" time_format:"2006-01-02 15:04:05"`
+	Message  string    `json:"message" binding:"required"`
 }
 
 type NotificationResponse struct {
-	ID        uuid.UUID `gorm:"type:uuid;default:gen_random_uuid()"`
-	UserID    uuid.UUID `gorm:"not null"`
-	DateTime  time.Time `gorm:"not null"`
-	Message   string    `gorm:"not null"`
-	CreatedAt time.Time `gorm:"not null;autoCreateTime"`
-	UpdatedAt time.Time `gorm:"not null;autoUpdateTime"`
+	ID        uuid.UUID `json:"id"`
+	UserID    uuid.UUID `json:"user_id"`
+	DateTime  time.Time `json:"date_time"`
+	Message   string    `json:"message"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type NotificationListResponse struct {
+	Result []*NotificationResponse
 }

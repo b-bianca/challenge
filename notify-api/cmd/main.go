@@ -34,10 +34,10 @@ func main() {
 
 	m.RegisterRoutes(v1Routes)
 
-	engine.Run(":8083")
+	engine.Run(":8081")
 
 	srv := &http.Server{
-		Addr:    ":8083",
+		Addr:    ":8081",
 		Handler: engine,
 	}
 

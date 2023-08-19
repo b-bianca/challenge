@@ -26,3 +26,12 @@ func (uc *useCaseNotify) CreateNotify(ctx context.Context, n *entity.Notificatio
 
 	return res, nil
 }
+
+func (uc *useCaseNotify) FetchNotify(ctx context.Context) (*entity.NotificationList, error) {
+	res, err := uc.repository.FetchNotify(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
