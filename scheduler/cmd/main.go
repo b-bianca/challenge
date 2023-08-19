@@ -1,15 +1,20 @@
 package main
 
 import (
-	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/b-bianca/melichallenge/scheduler"
 )
 
 func main() {
 
-	err := scheduler.Scheduler()
-	if err != nil {
-		log.Fatal("Erro no agendador:", err)
-	}
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
+
+	go scheduler.Scheduler()
+
+	<-interrupt
+
 }

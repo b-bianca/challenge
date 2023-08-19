@@ -31,9 +31,9 @@ func (n *Notify) FetchNotify(ctx context.Context) (*entity.NotificationList, err
 	dbFn := n.db.WithContext(ctx)
 
 	var nt []*entity.Notification
-	twoMinutesAgo := time.Now().Add(-2 * time.Minute)
+	fiveMinutesAgo := time.Now().Add(-5 * time.Minute)
 
-	if result := dbFn.Table("notify").Where("created_at >= ?", twoMinutesAgo).Find(&nt); result.Error != nil {
+	if result := dbFn.Table("notify").Where("created_at >= ?", fiveMinutesAgo).Find(&nt); result.Error != nil {
 		return nil, result.Error
 	}
 	return &entity.NotificationList{

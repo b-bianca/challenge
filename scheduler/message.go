@@ -44,4 +44,6 @@ func SendMessage(sender MessageSender, message *model.MessageRequest) {
 	if err != nil {
 		fmt.Println("Failed to send message:", err)
 	}
+
+	fmt.Println("Message sent", message)
 }
