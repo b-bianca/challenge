@@ -31,7 +31,7 @@ func Scheduler() error {
 
 		dbTime, err := time.Parse("2006-01-02T15:04:05.999999999-07:00", isoDateTime)
 		if err != nil {
-			fmt.Println("Erro ao fazer parsing do horário:", err)
+			fmt.Println("Error while parsing hour/time:", err)
 			return err
 		}
 
@@ -40,7 +40,6 @@ func Scheduler() error {
 			Message:  n.Message,
 		}
 		s.At(dbTime).Do(func() {
-			fmt.Println("Tarefa agendada para:", dbTime)
 			SendMessage(webPageSender, body)
 			taskCompleted <- struct{}{}
 		})
@@ -58,7 +57,7 @@ func Scheduler() error {
 				for i := 0; i < len(notification.Result); i++ {
 					<-taskCompleted
 				}
-				fmt.Println("Tarefas agendadas concluídas!")
+				fmt.Println("Completed scheduled tasks!")
 			}
 		}
 	}()

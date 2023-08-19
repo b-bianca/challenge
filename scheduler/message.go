@@ -42,6 +42,6 @@ func (w *WebPageSender) SendMessage(body *model.MessageRequest) error {
 func SendMessage(sender MessageSender, message *model.MessageRequest) {
 	err := sender.SendMessage(message)
 	if err != nil {
-		fmt.Println("Erro ao enviar mensagem:", err)
+		fmt.Println("Failed to send message:", err)
 	}
 }
