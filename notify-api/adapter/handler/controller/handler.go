@@ -17,8 +17,8 @@ func NewHandler(n port.NotifyUseCase) *Handler {
 
 func (h *Handler) RegisterRoutes(routes *gin.RouterGroup) {
 	notifyRoute := routes.Group("/notification")
+	notifyRoute.POST("/message", h.SendMessage)
 	notifyRoute.POST("/:user_id", h.CreateNotification)
 	notifyRoute.GET("", h.FetchNotification)
 	notifyRoute.GET("/message", h.FetchMessage)
-	notifyRoute.POST("/message", h.SendMessage)
 }

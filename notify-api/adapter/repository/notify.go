@@ -55,11 +55,13 @@ func (n *Notify) SendMessage(ctx context.Context, m *entity.Message) (*entity.Me
 func (n *Notify) FetchMessage(ctx context.Context) (*entity.MessageList, error) {
 	dbFn := n.db.WithContext(ctx)
 
-	var m *entity.MessageList
+	var m []*entity.Message
 
 	if result := dbFn.Table("message").Find(&m); result.Error != nil {
 		return nil, result.Error
 	}
 
-	return m, nil
+	return &entity.MessageList{
+		Result: m,
+	}, nil
 }

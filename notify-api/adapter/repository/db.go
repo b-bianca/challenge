@@ -2,6 +2,7 @@ package repository
 
 import (
 	"log"
+	"os"
 
 	_ "github.com/joho/godotenv/autoload"
 	"gorm.io/driver/postgres"
@@ -16,7 +17,9 @@ const (
 )
 
 func NewRepository() (repo *Repository) {
-	gdb, err := gorm.Open(postgres.Open("user=postuser password=postpass dbname=meli host=db port=5432 sslmode=disable"), &gorm.Config{})
+
+	postgresDSN := os.Getenv("POSTGRES_DSN")
+	gdb, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{})
 	if err != nil {
 		log.Panicf("failed to create postgres db: %v", err)
 	}

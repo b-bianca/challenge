@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -28,6 +27,7 @@ var (
 	}
 
 	createEntityInput = &entity.Notification{
+		UserID:   uuid.MustParse("8c2b51bf-7b4c-4a4b-a024-f283576cf191"),
 		DateTime: time.Date(2023, 9, 03, 10, 00, 00, 00, time.UTC),
 		Message:  "test-message",
 	}
@@ -73,14 +73,30 @@ var (
 		},
 	}
 
-	postPath  = "/notification/8c2b51bf-7b4c-4a4b-a024-f283576cf191"
-	fetchPath = "/notification"
+	sendEntityInput = &entity.Message{
+		NotifyID: uuid.MustParse("8c2b51bf-7b4c-4a4b-a024-f283576cf193"),
+		Message:  "message",
+	}
+
+	sendModelInput = &model.MessageRequest{
+		NotifyID: uuid.MustParse("8c2b51bf-7b4c-4a4b-a024-f283576cf193"),
+		Message:  "message",
+	}
+
+	sendEntityOutput = &entity.Message{
+		ID:       uuid.MustParse("8c2b51bf-7b4c-4a4b-a024-f283576cf192"),
+		NotifyID: uuid.MustParse("8c2b51bf-7b4c-4a4b-a024-f283576cf193"),
+		Message:  "message",
+	}
+
+	postPath        = "/notification/8c2b51bf-7b4c-4a4b-a024-f283576cf191"
+	postMessagePath = "/notification/message"
+	fetchPath       = "/notification"
 )
 
 func TestCreateNotification(t *testing.T) {
 	t.Run("when everything goes as expected; should return response 200 and body", func(t *testing.T) {
 		jsonBytes, err := json.Marshal(createModelInput)
-		fmt.Println(jsonBytes)
 		if err != nil {
 			return
 		}
@@ -137,7 +153,7 @@ func TestCreateNotification(t *testing.T) {
 	})
 }
 
-func TestFetchAll(t *testing.T) {
+func TestFetcNotification(t *testing.T) {
 	t.Run("when everything goes as expected; should return response 200 and body", func(t *testing.T) {
 
 		req := httptest.NewRequest(http.MethodGet, fetchPath, nil)
@@ -184,5 +200,64 @@ func TestFetchAll(t *testing.T) {
 
 		assert.Equal(t, http.StatusInternalServerError, res.StatusCode)
 		usecaseMock.AssertExpectations(t)
+	})
+}
+
+func TestSendMessage(t *testing.T) {
+	t.Run("when everything goes as expected; should return response 200 and body", func(t *testing.T) {
+		jsonBytes, err := json.Marshal(sendModelInput)
+		if err != nil {
+			return
+		}
+		req := httptest.NewRequest(http.MethodPost, postMessagePath, bytes.NewBuffer(jsonBytes))
+		w := httptest.NewRecorder()
+
+		_, engine := gin.CreateTestContext(w)
+
+		usecaseMock := mocks.NewNotifyUseCase(t)
+		usecaseMock.On("SendMessage", mock.AnythingOfType("*gin.Context"), sendEntityInput).Return(sendEntityOutput, nil).Once()
+
+		handler := controller.NewHandler(usecaseMock)
+
+		engine.POST("/notification/message", handler.SendMessage)
+		engine.ServeHTTP(w, req)
+		assert.NoError(t, err)
+		assert.Equal(t, http.StatusOK, w.Code)
+		usecaseMock.AssertExpectations(t)
+	})
+
+	t.Run("when body is invalid; should return response 400", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPost, postMessagePath, bytes.NewBuffer([]byte(`{>}`)))
+		w := httptest.NewRecorder()
+
+		_, engine := gin.CreateTestContext(w)
+
+		usecaseMock := mocks.NewNotifyUseCase(t)
+		handler := controller.NewHandler(usecaseMock)
+
+		engine.POST("/notification/message", handler.SendMessage)
+		engine.ServeHTTP(w, req)
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+	})
+
+	t.Run("when use case return an error, should return response 500", func(t *testing.T) {
+		jsonBytes, err := json.Marshal(sendModelInput)
+		if err != nil {
+			return
+		}
+		req := httptest.NewRequest(http.MethodPost, postMessagePath, bytes.NewBuffer(jsonBytes))
+
+		w := httptest.NewRecorder()
+
+		_, engine := gin.CreateTestContext(w)
+
+		usecaseMock := mocks.NewNotifyUseCase(t)
+		handler := controller.NewHandler(usecaseMock)
+
+		usecaseMock.On("SendMessage", mock.AnythingOfType("*gin.Context"), sendEntityInput).Return(nil, errors.New("error")).Once()
+
+		engine.POST("/notification/message", handler.SendMessage)
+		engine.ServeHTTP(w, req)
+		assert.Equal(t, http.StatusInternalServerError, w.Code)
 	})
 }
