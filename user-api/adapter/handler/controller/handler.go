@@ -17,6 +17,6 @@ func NewHandler(u port.UserUseCase) *Handler {
 
 func (h *Handler) RegisterRoutes(routes *gin.RouterGroup) {
 	userRoute := routes.Group("/user")
-	userRoute.PATCH("/:id/", h.PartialUpdateUser)
+	userRoute.PATCH("/:id", h.PartialUpdateUser)
 	userRoute.POST("/", h.CreateUser)
 }
