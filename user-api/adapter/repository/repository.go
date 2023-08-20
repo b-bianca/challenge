@@ -9,7 +9,7 @@ import (
 
 type Repository struct {
 	Conn    *gorm.DB
-	connSQL *sql.DB
+	ConnSQL *sql.DB
 	User    *User
 }
 
@@ -21,23 +21,23 @@ func New(gdb *gorm.DB) *Repository {
 
 	return &Repository{
 		Conn:    gdb,
-		connSQL: conn,
+		ConnSQL: conn,
 		User:    NewUserRepository(gdb),
 	}
 }
 
 func (r *Repository) SetMaxOpenConns(n int) {
-	r.connSQL.SetMaxOpenConns(n)
+	r.ConnSQL.SetMaxOpenConns(n)
 }
 
 func (r *Repository) SetMaxIdleConns(n int) {
-	r.connSQL.SetMaxIdleConns(n)
+	r.ConnSQL.SetMaxIdleConns(n)
 }
 
 func (r *Repository) SetConnMaxLifetime(t time.Duration) {
-	r.connSQL.SetConnMaxLifetime(t)
+	r.ConnSQL.SetConnMaxLifetime(t)
 }
 
 func (r *Repository) SetConnMaxIdleTime(t time.Duration) {
-	r.connSQL.SetConnMaxIdleTime(t)
+	r.ConnSQL.SetConnMaxIdleTime(t)
 }
