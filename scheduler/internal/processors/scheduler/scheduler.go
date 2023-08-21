@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	notifyAPIURL = "http://localhost:8081/api/v1/notification/message"
+	notifyAPIURL = "http://localhost:8081/api/v1/notification"
 )
 
 type Scheduler struct {
@@ -60,6 +60,8 @@ func (s *Scheduler) Start(ctx context.Context) {
 								err := message.SendMessage(s.WebSender, body)
 								if err != nil {
 									log.Println("Error sending message", err)
+								} else {
+									log.Println("Message sent!", body.Message)
 								}
 							}
 						}(n)
