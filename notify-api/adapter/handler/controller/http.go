@@ -17,16 +17,18 @@ func (h *Handler) CreateNotification(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
-
+	uuid.MustParse(userIDParam)
 	domain := &entity.Notification{
 		UserID:   uuid.MustParse(userIDParam),
 		DateTime: input.DateTime,
 		Message:  input.Message,
+		Ack:      false,
 	}
 
 	res, err := h.useCase.CreateNotify(ctx, domain)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Server error"})
+		message := err.Error()
+		ctx.JSON(http.StatusBadRequest, message)
 		return
 	}
 
@@ -57,6 +59,7 @@ func (h *Handler) FetchNotification(ctx *gin.Context) {
 			UserID:    item.UserID,
 			DateTime:  item.DateTime,
 			Message:   item.Message,
+			Ack:       item.Ack,
 			CreatedAt: item.CreatedAt,
 			UpdatedAt: item.UpdatedAt,
 		})

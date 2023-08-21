@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/b-bianca/melichallenge/notify-api/internal/domain/entity"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -23,7 +24,6 @@ func (n *Notify) CreateNotify(ctx context.Context, nt *entity.Notification) (*en
 	if result := dbFn.Table("notify").Create(nt); result.Error != nil {
 		return nil, result.Error
 	}
-
 	return nt, nil
 }
 
@@ -31,11 +31,15 @@ func (n *Notify) FetchNotify(ctx context.Context) (*entity.NotificationList, err
 	dbFn := n.db.WithContext(ctx)
 
 	var nt []*entity.Notification
-	fiveMinutesAgo := time.Now().Add(-5 * time.Minute)
+	twoMinutesAgo := time.Now().Add(-2 * time.Minute)
 
-	if result := dbFn.Table("notify").Where("created_at >= ?", fiveMinutesAgo).Find(&nt); result.Error != nil {
+	if result := dbFn.Table("notify").Where("created_at >= ? AND ack = ?", twoMinutesAgo, false).Find(&nt); result.Error != nil {
 		return nil, result.Error
 	}
+	for _, n := range nt {
+		dbFn.Table("notify").Where("id = ?", n.ID).Updates(map[string]interface{}{"ack": true})
+	}
+
 	return &entity.NotificationList{
 		Result: nt,
 	}, nil
@@ -64,4 +68,15 @@ func (n *Notify) FetchMessage(ctx context.Context) (*entity.MessageList, error) 
 	return &entity.MessageList{
 		Result: m,
 	}, nil
+}
+
+func (n *Notify) FetchUser(ctx context.Context, userID uuid.UUID) (*entity.User, error) {
+	dbFn := n.db.WithContext(ctx)
+
+	var u *entity.User
+
+	if result := dbFn.Table("users").Where("id = ?", userID).Find(&u); result.Error != nil {
+		return nil, result.Error
+	}
+	return u, nil
 }

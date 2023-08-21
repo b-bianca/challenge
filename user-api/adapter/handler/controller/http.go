@@ -17,7 +17,8 @@ func (h *Handler) CreateUser(ctx *gin.Context) {
 	}
 
 	domain := &entity.User{
-		CPF: input.CPF,
+		CPF:          input.CPF,
+		Notification: true,
 	}
 
 	res, err := h.useCase.CreateUser(ctx, domain)

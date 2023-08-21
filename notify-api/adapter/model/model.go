@@ -7,7 +7,7 @@ import (
 )
 
 type NotificationRequest struct {
-	DateTime time.Time `json:"date_time" binding:"required" time_format:"2006-01-02 15:04:05"`
+	DateTime time.Time `json:"date_time" binding:"required"`
 	Message  string    `json:"message" binding:"required"`
 }
 
@@ -16,6 +16,7 @@ type NotificationResponse struct {
 	UserID    uuid.UUID `json:"user_id"`
 	DateTime  time.Time `json:"date_time"`
 	Message   string    `json:"message"`
+	Ack       bool      `json:"ack"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
