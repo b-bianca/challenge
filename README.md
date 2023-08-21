@@ -29,12 +29,15 @@ Através de APIs é possível criar um usuário, e com esse usuário agendar e  
 
 #### O que esse projeto possui
 [x] Dockerfile e DockerCompose
+
 [x] Documentação para Consumo das APIs
-[x] Testes Automatizados
+
+[x] Testes Unitários
+
 [x] Componentes
-  [x] API para cadastro de mensagens e agendamento
+  [x] API para usuários
   [x] API para notificação
-  [x] Pooling
+  [x] Scheduller
   [x] Banco de dados
 
 ## O que esse projeto não faz e débitos técnicos
