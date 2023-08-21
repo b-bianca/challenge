@@ -10,7 +10,6 @@
   - [Executar o projeto](#como-executar-o-projeto)
   - [Executar o Docker](#executar-o-docker)
   - [Utilizar Aplicaçção & Documentação API](#utilizar-aplicação--documentação-api)
-  - [Demonstração Rodando Docker Compose e Consumindo API](#demonstração-rodando-docker-compose-e-consumindo-api)
 
 
 ## Sobre
@@ -28,28 +27,23 @@ Este projeto visa simular um sistema de envio de notificações agendadas para u
 Através de APIs é possível criar um usuário, e com esse usuário agendar e  enviar uma mensagem. Essa mensagem é simulada, tendo seu registro persistido no banco de dados apenas para efeito de evidencia do funcionamento da rotina de agendamento e envio.
 
 #### O que esse projeto possui
-[x] Dockerfile e DockerCompose
-
-[x] Documentação para Consumo das APIs
-
-[x] Testes Unitários
-
-[x] Componentes
-  [x] API para usuários
-  [x] API para notificação
-  [x] Scheduller
-  [x] Banco de dados
+ - [x] Dockerfile e DockerCompose
+ - [x] Documentação para Consumo das APIs
+ - [x] Testes Unitários
+ - [x] Componentes
+   - [x] API para usuários
+   - [x] API para notificação
+   - [x] Scheduller
+   - [x] Banco de dados
 
 ## O que esse projeto não faz e débitos técnicos
 #### O que esse projeto não faz
 - Não envia propriamente as notificações, apenas simula o envio agendado e registra no banco de dados para evidencia do funcionamento da rotina;
 
 #### Débitos técnicos
-[] Remoção paramêtros *hard coded*, como portas das aplicações.
-
-[] Estabelecer um intervalo mínimo entre o momento de criação da notificação e o agendamento dessa mesma notificação.
-
-[] Teste do scheduller
+- [ ] Remoção paramêtros *hard coded*, como portas das aplicações.
+- [ ] Estabelecer um intervalo mínimo entre o momento de criação da notificação e o agendamento dessa mesma notificação.
+- [ ] Teste do scheduller
 
 ## Como executar o projeto
 ### Criar Variáveis de Ambiente
