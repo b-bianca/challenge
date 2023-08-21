@@ -2,9 +2,7 @@ package scheduler
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/b-bianca/melichallenge/scheduler/internal/processors/message"
@@ -14,7 +12,7 @@ import (
 )
 
 var (
-	notifyAPIURL = os.Getenv("NOTIFY_API_URL")
+	notifyAPIURL = "http://localhost:8081/api/v1/notification/message"
 )
 
 type Scheduler struct {
@@ -34,7 +32,6 @@ func (s *Scheduler) Start(ctx context.Context) {
 			return
 		default:
 			notification, err := pulling.Pulling(notifyAPIURL)
-			fmt.Println(notification, "not")
 			if err != nil {
 				log.Println("Error fetching notifications", err)
 			} else {
@@ -63,8 +60,6 @@ func (s *Scheduler) Start(ctx context.Context) {
 								err := message.SendMessage(s.WebSender, body)
 								if err != nil {
 									log.Println("Error sending message", err)
-								} else {
-									fmt.Println("Message sent!", body.Message)
 								}
 							}
 						}(n)
