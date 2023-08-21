@@ -80,6 +80,6 @@ Notas: o comando deve ser efetuado na pasta raiz do projeto
 4. No momento agendado a mensagem é enviada, verifique no banco de dados para visualizar o envio `GET "http://localhost:8081/api/v1/notification/message"`
 5. Caso o usuário não queira mais receber notificações, é possivel realizar o opt-out `PATCH http://localhost:8082/api/v1/user/:user_id `
 
-A documentação está disponível via Postman com os casos de consumo.
+A documentação está disponível via Postman com os casos de consumo. É possivel rodar pelo link abaixo, ou copiando a coleção que esta dentro da pasta `docs`.
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/13244098-734faa73-a2e1-4b8e-8faf-42abaec3f5c7?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D13244098-734faa73-a2e1-4b8e-8faf-42abaec3f5c7%26entityType%3Dcollection%26workspaceId%3D5e98eea6-1218-49b0-abb5-3b3c919df553)
