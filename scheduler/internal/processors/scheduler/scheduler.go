@@ -26,6 +26,7 @@ func New(w message.MessageSender) *Scheduler {
 }
 
 func (s *Scheduler) Start(ctx context.Context) {
+
 	for {
 		select {
 		case <-ctx.Done():
