@@ -43,7 +43,9 @@ Através de APIs é possível criar um usuário, e com esse usuário agendar e  
 
 #### Débitos técnicos
 [] Remoção paramêtros *hard coded*, como portas das aplicações.
+
 [] Estabelecer um intervalo mínimo entre o momento de criação da notificação e o agendamento dessa mesma notificação.
+
 [] Teste do scheduller
 
 ## Como executar o projeto
@@ -57,7 +59,7 @@ POSTGRES_DB="meli"
 Notas: dada a natureza desse projeto, o arquivo ".env" já está na pasta raiz, assim como, intencionalmente, há valores ***hard coded*** no código.
 
 ### Executar o projeto
-É possivel executar o projeto através do Mekefile, a partir da linha de comando:
+É possivel executar o projeto através do Makefile, a partir da linha de comando. Mas caso queira, abaixo segue como executar o docker manualmente, e depois rode make run-scheduler.
 ~~~bash
 make run-project
 ~~~
