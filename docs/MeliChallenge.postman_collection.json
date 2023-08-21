@@ -1,0 +1,389 @@
+{
+	"info": {
+		"_postman_id": "734faa73-a2e1-4b8e-8faf-42abaec3f5c7",
+		"name": "MeliChallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13244098",
+		"_collection_link": "https://www.postman.com/lindoesdoback/workspace/challenge/collection/13244098-734faa73-a2e1-4b8e-8faf-42abaec3f5c7?action=share&source=collection_link&creator=13244098"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "CreateUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"1234567878\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/user",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						},
+						"description": "Criação de usuário. Somente o CPF é requerido."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cpf\": \"1234567878\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/user",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 21 Aug 2023 15:12:59 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"6988806a-a2bf-46a0-83bd-ea77d729de1d\",\n    \"cpf\": \"1234567878\",\n    \"notification\": true,\n    \"created_at\": \"2023-08-21T15:12:59.754683617Z\",\n    \"updated_at\": \"2023-08-21T15:12:59.754683617Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "PartialUpdateUser",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"notification\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/api/v1/user/c0397ec7-3a7d-4327-9f96-8939fe7a55ba",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"c0397ec7-3a7d-4327-9f96-8939fe7a55ba"
+							]
+						},
+						"description": "Atualização do campo 'Notification', para controle de opt-in e opt-out."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"notification\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/user/:user_id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"user",
+										":user_id"
+									],
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "837a938a-2363-43fe-b348-177aa0cc1590",
+											"description": "Inserir o D do usuário"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 21 Aug 2023 14:50:32 GMT"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"description": "API para cadastro e atualização de usuário. A atualização serve para dar opt-out e o usuário não receber mais notificações."
+		},
+		{
+			"name": "Notify",
+			"item": [
+				{
+					"name": "CreateNotify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date_time\": \"2023-08-19T21:29:27.488875848-03:00\",\r\n    \"message\": \"message-test-4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/notification/d0ed9cb6-a91b-4da3-b09a-1511f7a8d247",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"notification",
+								"d0ed9cb6-a91b-4da3-b09a-1511f7a8d247"
+							]
+						},
+						"description": "Criação de notificação a ser enviada. É necessário passar o user_id no path, e no corpo a data para envio e a mensagem. Caso o usuário tenha optado pra não ser notificado, um erro será exibido."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date_time\": \"2023-08-21T12:55:27.488875848-03:00\",\r\n    \"message\": \"bom dia flor do dia 49\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/api/v1/notification/:user_id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"v1",
+										"notification",
+										":user_id"
+									],
+									"query": [
+										{
+											"key": "user_id",
+											"value": null,
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "6988806a-a2bf-46a0-83bd-ea77d729de1d",
+											"description": "ID do usuário"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 21 Aug 2023 15:13:15 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "281"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"f8ed40ba-30e1-469a-b088-88cd5bdb3b56\",\n    \"user_id\": \"6988806a-a2bf-46a0-83bd-ea77d729de1d\",\n    \"date_time\": \"2023-08-21T12:55:27.488875848-03:00\",\n    \"message\": \"bom dia flor do dia 49\",\n    \"ack\": false,\n    \"created_at\": \"2023-08-21T15:13:15.87575746Z\",\n    \"updated_at\": \"2023-08-21T15:13:15.87575746Z\"\n}"
+						},
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date_time\": \"2023-08-21T12:55:27.488875848-03:00\",\r\n    \"message\": \"bom dia flor do dia 49\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/api/v1/notification/:user_id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"v1",
+										"notification",
+										":user_id"
+									],
+									"query": [
+										{
+											"key": "user_id",
+											"value": null,
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "59b40b93-65d1-4ea9-98cf-0fd7888df8a4",
+											"description": "ID do usuário"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 21 Aug 2023 15:27:07 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "44"
+								}
+							],
+							"cookie": [],
+							"body": "\"user not found or notification is disabled\""
+						}
+					]
+				},
+				{
+					"name": "GetNotifyList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/notification",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"notification"
+							]
+						},
+						"description": "Retorna uma lista com todas as notificações cadastradas, no intervalo de dois minutos de sua criação no banco de dados. Após a notificação ser retornada, seu status passará para ack = true e não será mais retornada numa proxima consulta."
+					},
+					"response": []
+				},
+				{
+					"name": "GetMessageList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/notification/message",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"notification",
+								"message"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API para gerenciamento de notificações. Com ela é possível criar e recuperar notificações e mensagens."
+		}
+	]
+}
