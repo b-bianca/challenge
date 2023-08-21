@@ -26,7 +26,6 @@ func New(w message.MessageSender) *Scheduler {
 }
 
 func (s *Scheduler) Start(ctx context.Context) {
-
 	for {
 		select {
 		case <-ctx.Done():
@@ -43,7 +42,6 @@ func (s *Scheduler) Start(ctx context.Context) {
 					if timeDifference > 0 {
 						go func(n *model.Notification) {
 							defer func() {
-
 							}()
 
 							timer := time.NewTimer(timeDifference)
