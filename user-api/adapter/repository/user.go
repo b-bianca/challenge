@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/b-bianca/melichallenge/user-api/internal/domain/entity"
 	"gorm.io/gorm"
@@ -19,8 +20,14 @@ func NewUserRepository(db *gorm.DB) *User {
 func (us *User) CreateUser(ctx context.Context, u *entity.User) (*entity.User, error) {
 	dbFn := us.db.WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true})
 
-	if result := dbFn.Table("users").Create(u); result.Error != nil {
+	result := dbFn.Table("users").Create(u)
+
+	if result.Error != nil {
 		return nil, result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return nil, fmt.Errorf("CPF already exists")
 	}
 
 	return u, nil
