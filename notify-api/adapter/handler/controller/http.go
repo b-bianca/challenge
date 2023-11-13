@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/b-bianca/melichallenge/notify-api/adapter/model"
@@ -14,6 +15,9 @@ func (h *Handler) CreateNotification(ctx *gin.Context) {
 
 	var input model.NotificationRequest
 	if err := ctx.ShouldBindJSON(&input); err != nil {
+		log.Println(
+			`"event": "deserialized_failed"`,
+		)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
@@ -27,8 +31,12 @@ func (h *Handler) CreateNotification(ctx *gin.Context) {
 
 	res, err := h.useCase.CreateNotify(ctx, domain)
 	if err != nil {
+		log.Println(
+			`"event": "use_case_create_notify_failed"`,
+		)
+
 		message := err.Error()
-		ctx.JSON(http.StatusBadRequest, message)
+		ctx.JSON(http.StatusInternalServerError, message)
 		return
 	}
 
@@ -47,6 +55,10 @@ func (h *Handler) CreateNotification(ctx *gin.Context) {
 func (h *Handler) FetchNotification(ctx *gin.Context) {
 	res, err := h.useCase.FetchNotify(ctx)
 	if err != nil {
+		log.Println(
+			`"event": "fetch_notification_failed"`,
+		)
+
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Server error"})
 		return
 	}
@@ -75,6 +87,10 @@ func (h *Handler) FetchNotification(ctx *gin.Context) {
 func (h *Handler) SendMessage(ctx *gin.Context) {
 	var input model.MessageRequest
 	if err := ctx.ShouldBindJSON(&input); err != nil {
+		log.Println(
+			`"event": "invalid_message_body"`,
+		)
+
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
@@ -86,6 +102,10 @@ func (h *Handler) SendMessage(ctx *gin.Context) {
 
 	res, err := h.useCase.SendMessage(ctx, domain)
 	if err != nil {
+		log.Println(
+			`"event": "send_message_failed"`,
+		)
+
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Server error"})
 		return
 	}
@@ -103,6 +123,10 @@ func (h *Handler) SendMessage(ctx *gin.Context) {
 func (h *Handler) FetchMessage(ctx *gin.Context) {
 	res, err := h.useCase.FetchMessage(ctx)
 	if err != nil {
+		log.Println(
+			`"event": "fetch_message_failed"`,
+		)
+
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Server error"})
 		return
 	}

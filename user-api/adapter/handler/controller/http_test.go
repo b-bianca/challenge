@@ -26,7 +26,8 @@ var (
 	}
 
 	createEntityInput = &entity.User{
-		CPF: "12312312312",
+		CPF:          "12312312312",
+		Notification: true,
 	}
 
 	createEntityOutput = &entity.User{
@@ -115,7 +116,9 @@ func TestCreateUser(t *testing.T) {
 			http.MethodPost,
 			"/",
 			bytes.NewBuffer(jsonBytes))
+
 		w := httptest.NewRecorder()
+
 		ctxGin, _ := gin.CreateTestContext(w)
 		ctxGin.Request = req
 
@@ -130,7 +133,6 @@ func TestCreateUser(t *testing.T) {
 		defer res.Body.Close()
 
 		assert.Equal(t, http.StatusInternalServerError, res.StatusCode)
-		usecaseMock.AssertExpectations(t)
 	})
 }
 
@@ -146,9 +148,9 @@ func TestPartialUpdateUser(t *testing.T) {
 		_, engine := gin.CreateTestContext(w)
 
 		usecaseMock := mocks.NewUserUseCase(t)
-		usecaseMock.On("PartialUpdateUser", mock.AnythingOfType("*gin.Context"), updateEntityInput).Return(nil).Once()
-
 		handler := user.NewHandler(usecaseMock)
+
+		usecaseMock.On("PartialUpdateUser", mock.AnythingOfType("*gin.Context"), updateEntityInput).Return(nil).Once()
 
 		assert.NoError(t, err)
 		engine.PATCH("/user/:id", handler.PartialUpdateUser)

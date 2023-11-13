@@ -61,12 +61,6 @@ func TestCreateNotify(t *testing.T) {
 			Message:  "message",
 			UserID:   defaultID,
 		}
-		want := &entity.Notification{
-			ID:       defaultID,
-			UserID:   defaultID,
-			DateTime: time.Date(2023, 9, 03, 10, 00, 00, 00, time.UTC),
-			Message:  "message",
-		}
 		wantUser := &entity.User{
 			ID:           defaultID,
 			CPF:          "12345678912",
@@ -74,7 +68,7 @@ func TestCreateNotify(t *testing.T) {
 		}
 
 		repo.On("FetchUser", ctxDefault, defaultID).Return(wantUser, nil).Once()
-		repo.On("CreateNotify", ctxDefault, given).Return(want, wantError).Once()
+		repo.On("CreateNotify", ctxDefault, given).Return(nil, wantError).Once()
 
 		got, err := service.CreateNotify(ctxDefault, given)
 		assert.ErrorIs(t, err, wantError)

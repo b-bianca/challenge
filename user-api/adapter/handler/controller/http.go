@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/b-bianca/melichallenge/user-api/adapter/model"
@@ -12,6 +13,9 @@ import (
 func (h *Handler) CreateUser(ctx *gin.Context) {
 	var input model.UserRequest
 	if err := ctx.ShouldBindJSON(&input); err != nil {
+		log.Println(
+			`"event": "deserialize_error"`,
+		)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
@@ -23,6 +27,9 @@ func (h *Handler) CreateUser(ctx *gin.Context) {
 
 	res, err := h.useCase.CreateUser(ctx, domain)
 	if err != nil {
+		log.Println(
+			`"event": "use_case_create_failed"`,
+		)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Server error"})
 		return
 	}
@@ -43,6 +50,9 @@ func (h *Handler) PartialUpdateUser(ctx *gin.Context) {
 
 	var input model.OptoutRequest
 	if err := ctx.ShouldBindJSON(&input); err != nil {
+		log.Println(
+			`"event": "deserialize_error"`,
+		)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
@@ -54,6 +64,9 @@ func (h *Handler) PartialUpdateUser(ctx *gin.Context) {
 
 	err := h.useCase.PartialUpdateUser(ctx, domain)
 	if err != nil {
+		log.Println(
+			`"event": "user_case_updated_user_failed"`,
+		)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Server error"})
 		return
 	}
