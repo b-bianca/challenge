@@ -14,7 +14,7 @@ func TestManageRegisterRoutes(t *testing.T) {
 	t.Run("when everything goes ok; should call apps", func(t *testing.T) {
 		u.On("RegisterRoutes", mock.AnythingOfType("*gin.RouterGroup")).Return().Once()
 		m := &Manage{
-			user: u,
+			notify: u,
 		}
 		m.RegisterRoutes(nil)
 
@@ -24,5 +24,5 @@ func TestManageRegisterRoutes(t *testing.T) {
 
 func TestNew(t *testing.T) {
 	got := New(&UseCases{})
-	assert.NotNil(t, got.user)
+	assert.NotNil(t, got.notify)
 }

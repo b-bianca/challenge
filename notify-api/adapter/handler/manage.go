@@ -11,7 +11,7 @@ type apps interface {
 }
 
 type Manage struct {
-	user apps
+	notify apps
 }
 
 type UseCases struct {
@@ -23,10 +23,10 @@ func New(uc *UseCases) *Manage {
 	notifyHandler := h.NewHandler(uc.Notify)
 
 	return &Manage{
-		user: notifyHandler,
+		notify: notifyHandler,
 	}
 }
 
 func (m *Manage) RegisterRoutes(group *gin.RouterGroup) {
-	m.user.RegisterRoutes(group)
+	m.notify.RegisterRoutes(group)
 }
