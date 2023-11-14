@@ -25,7 +25,8 @@ Este projeto visa simular um sistema de envio de notificações agendadas para u
 Através de APIs é possível criar um usuário, e com esse usuário agendar e  enviar uma mensagem. Essa mensagem é simulada, tendo seu registro persistido no banco de dados apenas para efeito de evidencia do funcionamento da rotina de agendamento e envio.
 
 ### Desenho da solução
-![image](https://github.com/b-bianca/challenge/assets/71153572/39bebf87-72dd-4527-9977-8a47297a4d26)
+![image](https://github.com/b-bianca/challenge/assets/71153572/99f6e65f-d0e1-4dc0-bcc8-642f873c36d1)
+
 
 #### O que esse projeto possui
  - [x] Dockerfile e DockerCompose
@@ -84,6 +85,6 @@ A documentação está disponível via Postman com os casos de consumo. É possi
 
 ### Videos do projeto
 
-![gif1](https://github.com/b-bianca/challenge/assets/71153572/95717437-7262-4959-a3c0-848185161a93)
+![gif1](https://github.com/b-bianca/challenge/assets/71153572/3e10bc4c-fc09-4e18-a9fc-ce6c586e192c)
 
-![gif2](https://github.com/b-bianca/challenge/assets/71153572/8cfa2d87-70c4-4656-8083-49a64d3992ed)
+![gif2](https://github.com/b-bianca/challenge/assets/71153572/7962a226-475c-4e45-8b60-2311631b59d8)
